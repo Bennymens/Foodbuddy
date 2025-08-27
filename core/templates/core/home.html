@@ -1,0 +1,474 @@
+<!-- core/templates/core/home.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodBuddy</title>
+  <link rel="stylesheet" href="{% static 'core/style.css' %}">
+  <style>
+    :root{
+      --bg: #ffffff;
+      --text: #101014;
+      --card: #f6f7f9;
+      --border: #e5e7eb;
+      --accent: #10b981;
+    }
+    :root[data-theme="dark"]{
+      --bg: #0b0c10;
+      --text: #f5f7ff;
+      --card: #13151b;
+      --border: #23262d;
+      --accent: #34d399;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:system-ui, sans-serif;
+      font-size: 14px;
+    }
+    a{color:inherit;text-decoration:none;}
+    img{max-width:100%;display:block;}
+    .container{
+      max-width:900px;
+      margin:0 auto;
+      padding:0.5rem;
+    }
+    /* Header */
+    .site-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0.7rem 1rem;
+      border-bottom:1px solid var(--border);
+      background:var(--bg);
+      position:sticky;
+      top:0;
+      z-index:1000;
+    }
+    .brand {
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 0.01em;
+    }
+    .site-header nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .site-header nav a{
+      margin-right:0.8rem;
+      font-weight:500;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+    .site-header nav a:last-child { margin-right: 0; }
+    .toggle{
+      border:1px solid var(--border);
+      background:transparent;
+      padding:0.3rem 0.7rem;
+      border-radius:6px;
+      cursor:pointer;
+      font-size: 1.1rem;
+      margin-left: 0.5rem;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      margin-left: 0.5rem;
+      z-index: 1100;
+    }
+    .hamburger span {
+      height: 3px;
+      width: 24px;
+      background: var(--text);
+      margin: 4px 0;
+      border-radius: 2px;
+      transition: all 0.3s;
+      display: block;
+    }
+    /* Mobile nav */
+    @media (max-width: 700px) {
+      .container { padding: 0.5rem 0.2rem; }
+      .site-header nav {
+        position: fixed;
+        top: 0;
+        right: -100vw;
+        height: 100vh;
+        width: 70vw;
+        max-width: 320px;
+        background: var(--bg);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2.5rem 1.2rem 1.2rem 1.2rem;
+        box-shadow: -2px 0 12px rgba(0,0,0,0.07);
+        transition: right 0.3s;
+        gap: 1.2rem;
+        z-index: 1050;
+      }
+      .site-header nav.open {
+        right: 0;
+      }
+      .site-header nav a {
+        margin: 0 0 0.7rem 0;
+        font-size: 1.1rem;
+      }
+      .toggle {
+        margin: 0.7rem 0 0 0;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+    /* Hamburger animation */
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+    /* Hero */
+    .hero{
+      text-align:center;
+      padding:2rem 0.5rem;
+    }
+    .hero h1{
+      font-size:1.3rem;
+      margin-bottom:0.5rem;
+    }
+    .hero p{
+      font-size:0.95rem;
+      max-width:400px;
+      margin:0 auto 1rem;
+    }
+    .hero button{
+      padding:0.5rem 1rem;
+      font-size:0.95rem;
+      background:var(--accent);
+      color:#062019;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+    }
+    /* Steps */
+    .steps{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:1.2rem;
+      margin-top:1.2rem;
+      justify-items: center;
+    }
+    .step{
+      background:var(--card);
+      padding:1.2rem;
+      border:1px solid var(--border);
+      border-radius:10px;
+      text-align:center;
+      width: 100%;
+      max-width: 220px;
+      min-width: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .step img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 0.3rem;
+    }
+    .step h3{
+      margin-top:0.3rem;
+      font-size: 0.95rem;
+    }
+    .step p{
+      font-size: 0.8rem;
+    }
+    /* Recipe Grid */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+      gap:1.2rem;
+      justify-items: center;
+    }
+    .tile{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:10px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      width: 100%;
+      max-width: 260px; /* was 220px, now 260px */
+      min-width: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+    .tile img {
+      height: 110px;      /* was 90px, now 110px */
+      object-fit: cover;
+    }
+    .tile-body{
+      padding:0.7rem;
+      flex-grow:1;
+    }
+    .tile-body h3{
+      margin-top:0;
+      font-size: 0.95rem;
+    }
+    .tile-body p{
+      font-size: 0.7rem;
+    }
+    .tile-body a{
+      display:inline-block;
+      margin-top:0.2rem;
+      color:var(--accent);
+      font-weight:500;
+      font-size: 0.7rem;
+    }
+    /* Input Card */
+    .card{
+      background:var(--card);
+      padding:1.2rem;
+      border:1px solid var(--border);
+      border-radius:10px;
+      margin:1.2rem auto;
+      text-align:center;
+      width: 100%;
+      max-width: 320px;
+      min-width: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+    .card h2{
+      font-size: 0.95rem;
+    }
+    .card input{
+      width:80%;
+      padding:0.3rem;
+      border:1px solid var(--border);
+      border-radius:6px;
+      font-size: 0.8rem;
+    }
+    .card button{
+      padding:0.3rem 0.7rem;
+      background:var(--accent);
+      color:#062019;
+      border:none;
+      border-radius:6px;
+      margin-left:0.3rem;
+      cursor:pointer;
+      font-size: 0.8rem;
+    }
+    /* Testimonials */
+    .testimonials{
+      margin-top:1.2rem;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:1.2rem;
+      justify-items: center;
+    }
+    .testimonial{
+      background:var(--card);
+      padding:1.2rem;
+      border-radius:10px;
+      border:1px solid var(--border);
+      font-style:italic;
+      font-size: 0.75rem;
+      width: 100%;
+      max-width: 220px;
+      min-width: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+    .testimonial strong{
+      display:block;
+      margin-top:0.5rem;
+      font-style:normal;
+      font-size: 0.75rem;
+    }
+    /* Footer */
+    .footer{
+      text-align:center;
+      padding:0.5rem;
+      border-top:1px solid var(--border);
+      margin-top:0.8rem;
+      font-size:0.7rem;
+      color:gray;
+    }
+    h2 {
+      font-size: 1rem;
+    }
+    @media (max-width: 500px) {
+      .hero h1 { font-size: 1.05rem; }
+      .hero p { font-size: 0.85rem; }
+      .container { padding: 0.2rem; }
+    }
+  </style>
+  <script>
+    // Light/Dark Mode
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+    function toggleTheme(){
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    // Hamburger menu
+    function toggleNav() {
+      const nav = document.getElementById('main-nav');
+      const burger = document.getElementById('hamburger');
+      nav.classList.toggle('open');
+      burger.classList.toggle('active');
+    }
+    // Close nav on link click (mobile)
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('#main-nav a').forEach(link => {
+        link.addEventListener('click', function() {
+          document.getElementById('main-nav').classList.remove('open');
+          document.getElementById('hamburger').classList.remove('active');
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="brand">🍳 FoodBuddy</div>
+    <nav id="main-nav">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'recipes' %}">Recipes</a>
+      <a href="{% url 'add_recipe' %}">Add Recipe</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}" style="display:inline-flex;align-items:center;gap:0.4em;">
+          <span class="profile-avatar-nav" style="width:32px;height:32px;border-radius:50%;background:var(--accent, #10b981);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1em;">
+            {% if user.first_name %}
+              {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+            {% else %}
+              {{ user.username|first|upper }}
+            {% endif %}
+          </span>
+        </a>
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+      {% endif %}
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle dark/light mode">🌓</button>
+    </nav>
+    <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Open navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Cook Smarter, Not Harder</h1>
+    <p>Tell us what’s in your kitchen, and FoodBuddy will suggest delicious recipes you can cook right now — with images, instructions, and video tutorials.</p>
+    <button>Get Started</button>
+  </section>
+
+  <!-- How it Works -->
+  <section class="container">
+    <h2 style="text-align:center;">How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <img src="{% static 'core/img/Adobe Express - file.png' %}" alt="Enter Ingredients"/>
+        <h3>Enter Ingredients</h3>
+        <p>Type in the items you have in your pantry or fridge.</p>
+      </div>
+      <div class="step">
+        <img src="{% static 'core/img/search.png' %}" alt="Get Recipe Suggestions"/>
+        <h3>Get Recipe Suggestions</h3>
+        <p>We’ll match your ingredients with recipes from our database.</p>
+      </div>
+      <div class="step">
+        <img src="{% static 'core/img/book.png' %}" alt="Cook & Enjoy"/>
+        <h3>Cook & Enjoy</h3>
+        <p>Follow our step-by-step guides and enjoy your meal!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Recipes -->
+  <section class="container" style="margin-top:3rem;">
+    <h2 style="text-align:center;">Featured Recipes</h2>
+    <div class="grid" style="margin-top:1.5rem;">
+      <div class="tile">
+        <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1080" alt="">
+        <div class="tile-body">
+          <h3>Tomato Egg Fried Rice</h3>
+          <p>Comfort food with pantry staples. Ready in 15 minutes.</p>
+          <a href="https://www.youtube.com/watch?v=8l0d1ZjGx_A" target="_blank">▶ Watch Tutorial</a>
+        </div>
+      </div>
+      <div class="tile">
+        <img src="{% static 'core/img/11973-spaghetti-carbonara-ii-DDMFS-4x3-6edea51e421e4457ac0c3269f3be5157.jpg' %}" alt="Spaghetti Carbonara">
+        <div class="tile-body">
+          <h3>Spaghetti Carbonara</h3>
+          <p>Creamy pasta with eggs, cheese, and pancetta.</p>
+          <a href="https://www.youtube.com/watch?v=3AAdKl1UYZs" target="_blank">▶ Watch Tutorial</a>
+        </div>
+      </div>
+      <div class="tile">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1080" alt="">
+        <div class="tile-body">
+          <h3>Chicken Curry</h3>
+          <p>Rich, flavorful curry with tender chicken pieces.</p>
+          <a href="https://www.youtube.com/watch?v=3zH6AtvUlf4" target="_blank">▶ Watch Tutorial</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ingredient Input -->
+  <section class="container">
+    <div class="card">
+      <h2>Find Recipes by Ingredients</h2>
+      <input type="text" placeholder="e.g. rice, tomato, egg">
+      <button>Suggest dishes</button>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="container">
+    <h2 style="text-align:center;">What Our Users Say</h2>
+    <div class="testimonials">
+      <div class="testimonial">
+        "FoodBuddy saved me from eating instant noodles every night. Now I cook real meals!"
+        <strong>— Alex R.</strong>
+      </div>
+      <div class="testimonial">
+        "I love how it gives me video tutorials. It’s like having a chef in my pocket."
+        <strong>— Priya M.</strong>
+      </div>
+      <div class="testimonial">
+        "Super helpful when I’m low on groceries. Highly recommend!"
+        <strong>— James K.</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    &copy; 2023 FoodBuddy. All rights reserved.
+  </footer>
+
+</body>
+</html>
