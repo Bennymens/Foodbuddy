@@ -1,747 +1,901 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FoodBuddy | Explore Recipes</title>
-  <link rel="stylesheet" href="{% static 'core/style.css' %}">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #f6f7f9;
-      --text: #101014;
-      --card: #fff;
-      --border: #e5e7eb;
-      --accent: #10b981;
-      --accent2: #ff914d;
-      --accent3: #fbbf24;
-      --shadow: 0 4px 24px rgba(16,185,129,0.07);
-    }
-    :root[data-theme="dark"] {
-      --bg: #101014;
-      --text: #f6f7f9;
-      --card: #18181b;
-      --border: #23262d;
-      --accent: #34d399;
-      --accent2: #ff914d;
-      --accent3: #fbbf24;
-      --shadow: 0 4px 24px rgba(16,185,129,0.10);
-    }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', system-ui, sans-serif;
-      margin: 0;
-      min-height: 100vh;
-    }
-    .site-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.7rem 1rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .brand {
-      font-size: 1.3rem;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: bold;
-      letter-spacing: 0.01em;
-      color: var(--accent);
-    }
-    #main-nav {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    #main-nav a {
-      margin-right: 0.8rem;
-      font-weight: 500;
-      font-size: 1rem;
-      transition: color 0.2s;
-      text-decoration: none;
-      color: var(--text);
-    }
-    #main-nav a:last-child { margin-right: 0; }
-    .toggle {
-      border: 1px solid var(--border);
-      background: transparent;
-      padding: 0.3rem 0.7rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      margin-left: 0.5rem;
-    }
-    .profile-avatar-nav {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1em;
-    }
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      margin-left: 0.5rem;
-      z-index: 1100;
-    }
-    .hamburger span {
-      height: 3px;
-      width: 24px;
-      background: var(--text);
-      margin: 4px 0;
-      border-radius: 2px;
-      transition: all 0.3s;
-      display: block;
-    }
-    @media (max-width: 700px) {
-      #main-nav {
-        position: fixed;
-        top: 0;
-        right: -100vw;
-        height: 100vh;
-        width: 70vw;
-        max-width: 320px;
-        background: var(--bg);
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 2.5rem 1.2rem 1.2rem 1.2rem;
-        box-shadow: -2px 0 12px rgba(0,0,0,0.07);
-        transition: right 0.3s;
-        gap: 1.2rem;
-        z-index: 1050;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FoodBuddy | Explore Recipes</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f6f7f9;
+        --text: #101014;
+        --card: #fff;
+        --border: #e5e7eb;
+        --accent: #10b981;
+        --accent2: #ff914d;
+        --accent3: #fbbf24;
+        --shadow: 0 4px 24px rgba(16, 185, 129, 0.07);
       }
-      #main-nav.open {
-        right: 0;
+      :root[data-theme="dark"] {
+        --bg: #101014;
+        --text: #f6f7f9;
+        --card: #18181b;
+        --border: #23262d;
+        --accent: #34d399;
+        --accent2: #ff914d;
+        --accent3: #fbbf24;
+        --shadow: 0 4px 24px rgba(16, 185, 129, 0.1);
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Inter", system-ui, sans-serif;
+        margin: 0;
+        min-height: 100vh;
+      }
+      .site-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.7rem 1rem;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      .brand {
+        font-size: 1.3rem;
+        font-family: "Montserrat", sans-serif;
+        font-weight: bold;
+        letter-spacing: 0.01em;
+        color: var(--accent);
+      }
+      #main-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
       }
       #main-nav a {
-        margin: 0 0 0.7rem 0;
-        font-size: 1.1rem;
+        margin-right: 0.8rem;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: color 0.2s;
+        text-decoration: none;
+        color: var(--text);
+      }
+      #main-nav a:last-child {
+        margin-right: 0;
       }
       .toggle {
-        margin: 0.7rem 0 0 0;
+        border: 1px solid var(--border);
+        background: transparent;
+        padding: 0.3rem 0.7rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        margin-left: 0.5rem;
+      }
+      .profile-avatar-nav {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1em;
       }
       .hamburger {
-        display: flex;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        margin-left: 0.5rem;
+        z-index: 1100;
       }
-    }
-    .hamburger.active span:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
-    }
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
-    .hamburger.active span:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
-    }
-
-    /* HERO VIDEO */
-    .explore-header {
-      padding: 0;
-      margin-bottom: 2.5rem;
-      border-radius: 0;
-      box-shadow: none;
-      background: none;
-      position: relative;
-    }
-    .hero-video-wrap {
-      position: relative;
-      max-width: 100vw;
-      overflow: hidden;
-      height: 340px; /* Increased height */
-    }
-    .hero-video-wrap video {
-      width: 100vw;
-      max-width: 100vw;
-      height: 340px; /* Increased height */
-      object-fit: cover;
-      display: block;
-      border-radius: 0;
-    }
-    .hero-overlay {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-      text-shadow: 0 2px 8px #000a;
-      background: rgba(0,0,0,0.18);
-      z-index: 2;
-    }
-    .hero-overlay h1 {
-      margin-bottom: 0.7rem;
-      font-size: 2rem;
-      font-family: 'Montserrat', sans-serif;
-      letter-spacing: 0.01em;
-      color: #fff;
-      font-weight: bold;
-      text-shadow: 0 2px 16px #000c;
-    }
-    .hero-overlay .quote {
-      font-size: 1rem;
-      font-style: italic;
-      opacity: 0.98;
-      margin-bottom: 0.7rem;
-    }
-    .hero-search-bar {
-      margin-top: 1.2rem;
-      width: 100%;
-      max-width: 340px;
-      display: flex;
-      background: rgba(255,255,255,0.92);
-      border-radius: 8px;
-      box-shadow: 0 2px 12px rgba(16,185,129,0.07);
-      overflow: hidden;
-    }
-    .hero-search-bar input {
-      flex: 1;
-      border: none;
-      padding: 0.7em 1em;
-      font-size: 1em;
-      outline: none;
-      background: transparent;
-      color: var(--text);
-    }
-    .hero-search-bar button {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 0 1.1em;
-      font-size: 1em;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.18s;
-    }
-    .hero-search-bar button:hover {
-      background: var(--accent2);
-    }
-    @media (max-width: 700px) {
-      .hero-video-wrap,
-      .hero-video-wrap video {
-        height: 260px; /* Taller on mobile */
+      .hamburger span {
+        height: 3px;
+        width: 24px;
+        background: var(--text);
+        margin: 4px 0;
+        border-radius: 2px;
+        transition: all 0.3s;
+        display: block;
       }
-      .hero-overlay h1 { font-size: 1rem; }
-      .hero-overlay .quote { font-size: 0.9rem; }
-      .hero-search-bar input { font-size: 0.95em; }
-    }
-
-    /* INGREDIENT TAGS */
-    .ingredient-tags {
-      display: flex;
-      gap: 0.7em;
-      overflow-x: auto;
-      padding: 1.2em 1em 0.7em 1em;
-      margin: 0 auto 1.2em auto;
-      max-width: 1100px;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      scroll-behavior: smooth;
-      position: relative;
-    }
-    .ingredient-tags::-webkit-scrollbar { display: none; }
-    .ingredient-tag {
-      background: var(--accent2);
-      color: #fff;
-      border-radius: 20px;
-      padding: 0.4em 1em;
-      font-size: 0.95em;
-      font-weight: 500;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.18s, color 0.18s;
-      border: none;
-      outline: none;
-      display: flex;
-      align-items: center;
-      gap: 0.4em;
-      box-shadow: 0 1px 4px rgba(16,185,129,0.07);
-    }
-    .ingredient-tag:hover, .ingredient-tag.active {
-      background: var(--accent);
-      color: #fff;
-    }
-    .ingredient-slider-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      font-size: 1.2em;
-      cursor: pointer;
-      z-index: 2;
-      opacity: 0.85;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .ingredient-slider-btn.left {
-      left: 0;
-    }
-    .ingredient-slider-btn.right {
-      right: 0;
-    }
-
-    /* RECIPE GRID */
-    .recipes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.2rem;
-      max-width: 900px;
-      margin: 0 auto 2rem auto;
-      padding: 0 0.5rem;
-    }
-    .recipe-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.18s, box-shadow 0.18s;
-      position: relative;
-      cursor: pointer;
-      min-width: 0;
-      max-width: 220px;
-      margin: 0 auto;
-    }
-    .recipe-card:hover {
-      transform: translateY(-4px) scale(1.03);
-      box-shadow: 0 8px 32px rgba(16,185,129,0.10);
-      z-index: 2;
-    }
-    .recipe-card img {
-      width: 100%;
-      height: 90px;
-      object-fit: cover;
-      background: #eee;
-      transition: transform 0.2s;
-    }
-    .recipe-card:hover img {
-      transform: scale(1.04);
-    }
-    .recipe-card-body {
-      padding: 0.8rem 0.8rem 0.7rem 0.8rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
-    .recipe-card h3 {
-      margin: 0 0 0.3rem 0;
-      font-size: 1em;
-      color: var(--accent);
-      font-family: 'Montserrat', sans-serif;
-      font-weight: bold;
-    }
-    .recipe-card p {
-      margin: 0 0 0.7rem 0;
-      color: #555;
-      font-size: 0.95em;
-      flex: 1;
-    }
-    .recipe-card .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 0.2rem;
-    }
-    .recipe-card .view-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 0.3em 0.9em;
-      font-weight: bold;
-      font-size: 0.95em;
-      cursor: pointer;
-      transition: background 0.18s;
-      text-decoration: none;
-      display: inline-block;
-    }
-    .recipe-card .view-btn:hover {
-      background: var(--accent2);
-    }
-    .recipe-card .time, .recipe-card .difficulty {
-      font-size: 0.93em;
-      color: #888;
-      display: flex;
-      align-items: center;
-      gap: 0.3em;
-    }
-    .recipe-card .save-btn {
-      background: none;
-      border: none;
-      color: var(--accent2);
-      font-size: 1.1em;
-      cursor: pointer;
-      margin-left: 0.3em;
-      transition: color 0.18s;
-    }
-    .recipe-card .save-btn.saved { color: #e63946; }
-    @media (max-width: 700px) {
-      .recipes-grid { gap: 0.7rem; }
-      .recipe-card img { height: 60px; }
-      .recipe-card { max-width: 100%; }
-    }
-
-    /* CATEGORIES */
-    .explore-categories {
-      max-width: 900px;
-      margin: 0 auto 1.5rem auto;
-      padding: 0 0.5rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 0.7rem;
-    }
-    .category-card {
-      background: var(--accent);
-      color: #fff;
-      border-radius: 12px;
-      padding: 0.7rem 0.7rem;
-      font-size: 0.98rem;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 0.6em;
-      box-shadow: 0 2px 8px rgba(16,185,129,0.07);
-      cursor: pointer;
-      transition: transform 0.18s, box-shadow 0.18s;
-      min-width: 0;
-      justify-content: center;
-    }
-    .category-card:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 8px 24px rgba(16,185,129,0.10);
-      background: var(--accent2);
-    }
-    .category-card span {
-      font-size: 1.2em;
-      margin-right: 0.2em;
-    }
-
-    /* FEATURED RECIPE */
-    .featured-recipe {
-      max-width: 700px;
-      margin: 1.5rem auto 1.5rem auto;
-      background: var(--accent);
-      border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(16,185,129,0.08);
-      display: flex;
-      align-items: stretch;
-      overflow: hidden;
-      color: #fff;
-      position: relative;
-      min-height: 180px;
-    }
-    .featured-recipe img {
-      width: 180px;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 0;
-      flex-shrink: 0;
-      background: #fff;
-      display: block;
-    }
-    .featured-recipe_body {
-      padding: 1.2rem 1.2rem 1.2rem 1.2rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .featured-recipe_body h2 {
-      font-size: 1.2rem;
-      margin: 0 0 0.5rem 0;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: bold;
-    }
-    .featured-recipe_body p {
-      font-size: 0.98rem;
-      margin-bottom: 0.7rem;
-    }
-    .featured-recipe_body .view-btn {
-      background: #fff;
-      color: var(--accent);
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      padding: 0.5em 1.2em;
-      font-size: 1em;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(16,185,129,0.07);
-      transition: background 0.18s, color 0.18s;
-      text-decoration: none;
-      align-self: flex-start;
-    }
-    .featured-recipe_body .view-btn:hover {
-      background: var(--accent2);
-      color: #fff;
-    }
-    @media (max-width: 900px) {
-      .featured-recipe { flex-direction: column; }
-      .featured-recipe img { width: 100%; height: 120px; border-radius: 0; }
-      .featured-recipe_body { padding: 0.8rem; }
-    }
-    @media (max-width: 700px) {
-      .featured-recipe img { height: 90px; }
-      .featured-recipe_body h2 { font-size: 1rem; }
-      .featured-recipe_body p { font-size: 0.93em; }
-    }
-  </style>
-  <script>
-    // Theme toggle persistence
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    }
-    function toggleTheme(){
-      const html = document.documentElement;
-      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    }
-    // Hamburger menu
-    function toggleNav() {
-      const nav = document.getElementById('main-nav');
-      const burger = document.getElementById('hamburger');
-      nav.classList.toggle('open');
-      burger.classList.toggle('active');
-    }
-    // Close nav on link click (mobile)
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('#main-nav a').forEach(link => {
-        link.addEventListener('click', function() {
-          document.getElementById('main-nav').classList.remove('open');
-          document.getElementById('hamburger').classList.remove('active');
-        });
-      });
-      // Ingredient tag click (demo)
-      document.querySelectorAll('.ingredient-tag').forEach(tag => {
-        tag.addEventListener('click', function() {
-          document.querySelectorAll('.ingredient-tag').forEach(t => t.classList.remove('active'));
-          this.classList.add('active');
-          // TODO: Filter recipes by ingredient
-        });
-      });
-      // Save button (demo)
-      document.querySelectorAll('.save-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          this.classList.toggle('saved');
-        });
-      });
-    });
-    // Ingredient tag slider
-    function slideIngredients(direction) {
-      const container = document.getElementById('ingredientTags');
-      const scrollAmount = 120;
-      container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-    }
-    // Ingredient tag auto-scroll
-    let autoScroll = setInterval(() => {
-      const container = document.getElementById('ingredientTags');
-      if (container) {
-        if (container.scrollLeft + container.offsetWidth >= container.scrollWidth - 2) {
-          container.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          container.scrollBy({ left: 80, behavior: 'smooth' });
+      @media (max-width: 700px) {
+        #main-nav {
+          position: fixed;
+          top: 0;
+          right: -100vw;
+          height: 100vh;
+          width: 70vw;
+          max-width: 320px;
+          background: var(--bg);
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 2.5rem 1.2rem 1.2rem 1.2rem;
+          box-shadow: -2px 0 12px rgba(0, 0, 0, 0.07);
+          transition: right 0.3s;
+          gap: 1.2rem;
+          z-index: 1050;
+        }
+        #main-nav.open {
+          right: 0;
+        }
+        #main-nav a {
+          margin: 0 0 0.7rem 0;
+          font-size: 1.1rem;
+        }
+        .toggle {
+          margin: 0.7rem 0 0 0;
+        }
+        .hamburger {
+          display: flex;
         }
       }
-    }, 1800);
+      .hamburger.active span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+      .hamburger.active span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
 
-    // Pause on hover
-    const tags = document.getElementById('ingredientTags');
-    if (tags) {
-      tags.addEventListener('mouseenter', () => clearInterval(autoScroll));
-      tags.addEventListener('mouseleave', () => {
-        autoScroll = setInterval(() => {
-          if (tags.scrollLeft + tags.offsetWidth >= tags.scrollWidth - 2) {
-            tags.scrollTo({ left: 0, behavior: 'smooth' });
-          } else {
-            tags.scrollBy({ left: 80, behavior: 'smooth' });
-          }
-        }, 1800);
+      /* HERO VIDEO */
+      .explore-header {
+        padding: 0;
+        margin-bottom: 2.5rem;
+        border-radius: 0;
+        box-shadow: none;
+        background: none;
+        position: relative;
+      }
+      .hero-video-wrap {
+        position: relative;
+        max-width: 100vw;
+        overflow: hidden;
+        height: 340px; /* Increased height */
+      }
+      .hero-video-wrap video {
+        width: 100vw;
+        max-width: 100vw;
+        height: 340px; /* Increased height */
+        object-fit: cover;
+        display: block;
+        border-radius: 0;
+      }
+      .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        text-shadow: 0 2px 8px #000a;
+        background: rgba(0, 0, 0, 0.18);
+        z-index: 2;
+      }
+      .hero-overlay h1 {
+        margin-bottom: 0.7rem;
+        font-size: 2rem;
+        font-family: "Montserrat", sans-serif;
+        letter-spacing: 0.01em;
+        color: #fff;
+        font-weight: bold;
+        text-shadow: 0 2px 16px #000c;
+      }
+      .hero-overlay .quote {
+        font-size: 1rem;
+        font-style: italic;
+        opacity: 0.98;
+        margin-bottom: 0.7rem;
+      }
+      .hero-search-bar {
+        margin-top: 1.2rem;
+        width: 100%;
+        max-width: 340px;
+        display: flex;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 8px;
+        box-shadow: 0 2px 12px rgba(16, 185, 129, 0.07);
+        overflow: hidden;
+      }
+      .hero-search-bar input {
+        flex: 1;
+        border: none;
+        padding: 0.7em 1em;
+        font-size: 1em;
+        outline: none;
+        background: transparent;
+        color: var(--text);
+      }
+      .hero-search-bar button {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        padding: 0 1.1em;
+        font-size: 1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.18s;
+      }
+      .hero-search-bar button:hover {
+        background: var(--accent2);
+      }
+      @media (max-width: 700px) {
+        .hero-video-wrap,
+        .hero-video-wrap video {
+          height: 260px; /* Taller on mobile */
+        }
+        .hero-overlay h1 {
+          font-size: 1rem;
+        }
+        .hero-overlay .quote {
+          font-size: 0.9rem;
+        }
+        .hero-search-bar input {
+          font-size: 0.95em;
+        }
+      }
+
+      /* INGREDIENT TAGS */
+      .ingredient-tags {
+        display: flex;
+        gap: 0.7em;
+        overflow-x: auto;
+        padding: 1.2em 1em 0.7em 1em;
+        margin: 0 auto 1.2em auto;
+        max-width: 1100px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        scroll-behavior: smooth;
+        position: relative;
+      }
+      .ingredient-tags::-webkit-scrollbar {
+        display: none;
+      }
+      .ingredient-tag {
+        background: var(--accent2);
+        color: #fff;
+        border-radius: 20px;
+        padding: 0.4em 1em;
+        font-size: 0.95em;
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.18s, color 0.18s;
+        border: none;
+        outline: none;
+        display: flex;
+        align-items: center;
+        gap: 0.4em;
+        box-shadow: 0 1px 4px rgba(16, 185, 129, 0.07);
+      }
+      .ingredient-tag:hover,
+      .ingredient-tag.active {
+        background: var(--accent);
+        color: #fff;
+      }
+      .ingredient-slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        font-size: 1.2em;
+        cursor: pointer;
+        z-index: 2;
+        opacity: 0.85;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .ingredient-slider-btn.left {
+        left: 0;
+      }
+      .ingredient-slider-btn.right {
+        right: 0;
+      }
+
+      /* RECIPE GRID */
+      .recipes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.2rem;
+        max-width: 900px;
+        margin: 0 auto 2rem auto;
+        padding: 0 0.5rem;
+      }
+      .recipe-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.18s, box-shadow 0.18s;
+        position: relative;
+        cursor: pointer;
+        min-width: 0;
+        max-width: 220px;
+        margin: 0 auto;
+      }
+      .recipe-card:hover {
+        transform: translateY(-4px) scale(1.03);
+        box-shadow: 0 8px 32px rgba(16, 185, 129, 0.1);
+        z-index: 2;
+      }
+      .recipe-card img {
+        width: 100%;
+        height: 90px;
+        object-fit: cover;
+        background: #eee;
+        transition: transform 0.2s;
+      }
+      .recipe-card:hover img {
+        transform: scale(1.04);
+      }
+      .recipe-card-body {
+        padding: 0.8rem 0.8rem 0.7rem 0.8rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+      .recipe-card h3 {
+        margin: 0 0 0.3rem 0;
+        font-size: 1em;
+        color: var(--accent);
+        font-family: "Montserrat", sans-serif;
+        font-weight: bold;
+      }
+      .recipe-card p {
+        margin: 0 0 0.7rem 0;
+        color: #555;
+        font-size: 0.95em;
+        flex: 1;
+      }
+      .recipe-card .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 0.2rem;
+      }
+      .recipe-card .view-btn {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.3em 0.9em;
+        font-weight: bold;
+        font-size: 0.95em;
+        cursor: pointer;
+        transition: background 0.18s;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .recipe-card .view-btn:hover {
+        background: var(--accent2);
+      }
+      .recipe-card .time,
+      .recipe-card .difficulty {
+        font-size: 0.93em;
+        color: #888;
+        display: flex;
+        align-items: center;
+        gap: 0.3em;
+      }
+      .recipe-card .save-btn {
+        background: none;
+        border: none;
+        color: var(--accent2);
+        font-size: 1.1em;
+        cursor: pointer;
+        margin-left: 0.3em;
+        transition: color 0.18s;
+      }
+      .recipe-card .save-btn.saved {
+        color: #e63946;
+      }
+      @media (max-width: 700px) {
+        .recipes-grid {
+          gap: 0.7rem;
+        }
+        .recipe-card img {
+          height: 60px;
+        }
+        .recipe-card {
+          max-width: 100%;
+        }
+      }
+
+      /* CATEGORIES */
+      .explore-categories {
+        max-width: 900px;
+        margin: 0 auto 1.5rem auto;
+        padding: 0 0.5rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.7rem;
+      }
+      .category-card {
+        background: var(--accent);
+        color: #fff;
+        border-radius: 12px;
+        padding: 0.7rem 0.7rem;
+        font-size: 0.98rem;
+        font-family: "Montserrat", sans-serif;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.07);
+        cursor: pointer;
+        transition: transform 0.18s, box-shadow 0.18s;
+        min-width: 0;
+        justify-content: center;
+      }
+      .category-card:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.1);
+        background: var(--accent2);
+      }
+      .category-card span {
+        font-size: 1.2em;
+        margin-right: 0.2em;
+      }
+
+      /* FEATURED RECIPE */
+      .featured-recipe {
+        max-width: 700px;
+        margin: 1.5rem auto 1.5rem auto;
+        background: var(--accent);
+        border-radius: 18px;
+        box-shadow: 0 4px 24px rgba(16, 185, 129, 0.08);
+        display: flex;
+        align-items: stretch;
+        overflow: hidden;
+        color: #fff;
+        position: relative;
+        min-height: 180px;
+      }
+      .featured-recipe img {
+        width: 180px;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
+        flex-shrink: 0;
+        background: #fff;
+        display: block;
+      }
+      .featured-recipe_body {
+        padding: 1.2rem 1.2rem 1.2rem 1.2rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .featured-recipe_body h2 {
+        font-size: 1.2rem;
+        margin: 0 0 0.5rem 0;
+        font-family: "Montserrat", sans-serif;
+        font-weight: bold;
+      }
+      .featured-recipe_body p {
+        font-size: 0.98rem;
+        margin-bottom: 0.7rem;
+      }
+      .featured-recipe_body .view-btn {
+        background: #fff;
+        color: var(--accent);
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5em 1.2em;
+        font-size: 1em;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.07);
+        transition: background 0.18s, color 0.18s;
+        text-decoration: none;
+        align-self: flex-start;
+      }
+      .featured-recipe_body .view-btn:hover {
+        background: var(--accent2);
+        color: #fff;
+      }
+      @media (max-width: 900px) {
+        .featured-recipe {
+          flex-direction: column;
+        }
+        .featured-recipe img {
+          width: 100%;
+          height: 120px;
+          border-radius: 0;
+        }
+        .featured-recipe_body {
+          padding: 0.8rem;
+        }
+      }
+      @media (max-width: 700px) {
+        .featured-recipe img {
+          height: 90px;
+        }
+        .featured-recipe_body h2 {
+          font-size: 1rem;
+        }
+        .featured-recipe_body p {
+          font-size: 0.93em;
+        }
+      }
+    </style>
+    <script>
+      // Theme toggle persistence
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      }
+      function toggleTheme() {
+        const html = document.documentElement;
+        const next =
+          html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        html.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+      }
+      // Hamburger menu
+      function toggleNav() {
+        const nav = document.getElementById("main-nav");
+        const burger = document.getElementById("hamburger");
+        nav.classList.toggle("open");
+        burger.classList.toggle("active");
+      }
+      // Close nav on link click (mobile)
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("#main-nav a").forEach((link) => {
+          link.addEventListener("click", function () {
+            document.getElementById("main-nav").classList.remove("open");
+            document.getElementById("hamburger").classList.remove("active");
+          });
+        });
+        // Ingredient tag click (demo)
+        document.querySelectorAll(".ingredient-tag").forEach((tag) => {
+          tag.addEventListener("click", function () {
+            document
+              .querySelectorAll(".ingredient-tag")
+              .forEach((t) => t.classList.remove("active"));
+            this.classList.add("active");
+            // TODO: Filter recipes by ingredient
+          });
+        });
+        // Save button (demo)
+        document.querySelectorAll(".save-btn").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            this.classList.toggle("saved");
+          });
+        });
       });
-    }
-  </script>
-</head>
-<body>
+      // Ingredient tag slider
+      function slideIngredients(direction) {
+        const container = document.getElementById("ingredientTags");
+        const scrollAmount = 120;
+        container.scrollBy({
+          left: direction * scrollAmount,
+          behavior: "smooth",
+        });
+      }
+      // Ingredient tag auto-scroll
+      let autoScroll = setInterval(() => {
+        const container = document.getElementById("ingredientTags");
+        if (container) {
+          if (
+            container.scrollLeft + container.offsetWidth >=
+            container.scrollWidth - 2
+          ) {
+            container.scrollTo({ left: 0, behavior: "smooth" });
+          } else {
+            container.scrollBy({ left: 80, behavior: "smooth" });
+          }
+        }
+      }, 1800);
 
-  <!-- Header -->
-  <header class="site-header">
-    <div class="brand">🍳 FoodBuddy</div>
-    <nav id="main-nav">
-      <a href="{% url 'home' %}">Home</a>
-      <a href="{% url 'recipes' %}">Recipes</a>
-      <a href="{% url 'add_recipe' %}">Add Recipe</a>
-      {% if user.is_authenticated %}
-        <a href="{% url 'profile' %}" style="display:inline-flex;align-items:center;gap:0.4em;">
+      // Pause on hover
+      const tags = document.getElementById("ingredientTags");
+      if (tags) {
+        tags.addEventListener("mouseenter", () => clearInterval(autoScroll));
+        tags.addEventListener("mouseleave", () => {
+          autoScroll = setInterval(() => {
+            if (tags.scrollLeft + tags.offsetWidth >= tags.scrollWidth - 2) {
+              tags.scrollTo({ left: 0, behavior: "smooth" });
+            } else {
+              tags.scrollBy({ left: 80, behavior: "smooth" });
+            }
+          }, 1800);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="site-header">
+      <div class="brand">🍳 FoodBuddy</div>
+      <nav id="main-nav">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'recipes' %}">Recipes</a>
+        <a href="{% url 'add_recipe' %}">Add Recipe</a>
+        {% if user.is_authenticated %}
+        <a
+          href="{% url 'profile' %}"
+          style="display: inline-flex; align-items: center; gap: 0.4em"
+        >
           <span class="profile-avatar-nav">
-            {% if user.first_name %}
-              {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
-            {% else %}
-              {{ user.username|first|upper }}
-            {% endif %}
+            {% if user.first_name %} {{ user.first_name|first|upper }}{{
+            user.last_name|first|upper }} {% else %} {{
+            user.username|first|upper }} {% endif %}
           </span>
         </a>
         <a href="{% url 'logout' %}">Logout</a>
-      {% else %}
+        {% else %}
         <a href="{% url 'login' %}">Login</a>
-      {% endif %}
-      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle dark/light mode">🌓</button>
-    </nav>
-    <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Open navigation">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </header>
+        {% endif %}
+        <button
+          class="toggle"
+          onclick="toggleTheme()"
+          aria-label="Toggle dark/light mode"
+        >
+          🌓
+        </button>
+      </nav>
+      <button
+        class="hamburger"
+        id="hamburger"
+        onclick="toggleNav()"
+        aria-label="Open navigation"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
 
-  <!-- HERO VIDEO + OVERLAY -->
-  <section class="explore-header">
-    <div class="hero-video-wrap">
-      <video autoplay loop muted playsinline
-        style="width:100vw;max-width:100vw;height:340px;object-fit:cover;display:block;border-radius:0;">
-        <source src="{% static 'core/video/WhatsApp Video 2025-08-28 at 15.33.06_513f5d77.mp4' %}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <div class="hero-overlay">
-        <h1>Discover Recipes with What You Have</h1>
-        <div class="quote">
-          “One cannot think well, love well, sleep well, if one has not dined well.”<br>
-          <span style="font-size:0.95em;">– Virginia Woolf</span>
-        </div>
-        <form class="hero-search-bar" method="get" action="{% url 'recipes' %}">
-          <input type="text" name="q" placeholder="Search by ingredient or dish…" autocomplete="off">
-          <button type="submit">Search</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- INGREDIENT QUICK PICKS (with slider buttons) -->
-  <div style="position:relative;max-width:1100px;margin:0 auto 1.2em auto;">
-    <button class="ingredient-slider-btn left" onclick="slideIngredients(-1)" aria-label="Scroll left">&#8592;</button>
-    <div class="ingredient-tags" id="ingredientTags">
-      <button class="ingredient-tag"><span>🍅</span>Tomato</button>
-      <button class="ingredient-tag"><span>🥑</span>Avocado</button>
-      <button class="ingredient-tag"><span>🐟</span>Salmon</button>
-      <button class="ingredient-tag"><span>🥕</span>Carrot</button>
-      <button class="ingredient-tag"><span>🍗</span>Chicken</button>
-      <button class="ingredient-tag"><span>🥚</span>Egg</button>
-      <button class="ingredient-tag"><span>🧀</span>Cheese</button>
-      <button class="ingredient-tag"><span>🍞</span>Bread</button>
-      <button class="ingredient-tag"><span>🥦</span>Broccoli</button>
-      <button class="ingredient-tag"><span>🍚</span>Rice</button>
-      <button class="ingredient-tag"><span>🍝</span>Pasta</button>
-      <button class="ingredient-tag"><span>🍤</span>Shrimp</button>
-      <!-- Add more as needed -->
-    </div>
-    <button class="ingredient-slider-btn right" onclick="slideIngredients(1)" aria-label="Scroll right">&#8594;</button>
-  </div>
-
-  <!-- FEATURED RECIPE OF THE DAY -->
-  <section class="featured-recipe">
-    <img src="{% static 'core/img/11973-spaghetti-carbonara-ii-DDMFS-4x3-6edea51e421e4457ac0c3269f3be5157.jpg' %}" alt="Spaghetti Carbonara">
-    <div class="featured-recipe_body">
-      <h2>Recipe of the Day: Spaghetti Carbonara</h2>
-      <p>Creamy pasta with eggs, cheese, and pancetta. A Roman classic, perfect for any night of the week!</p>
-      <a href="https://www.youtube.com/watch?v=3AAdKl1UYZs" target="_blank" class="view-btn">View Recipe</a>
-    </div>
-  </section>
-
-  <!-- EXPLORE CATEGORIES -->
-  <section class="explore-categories">
-    <div class="category-card"><span>🍲</span>Quick & Easy Meals</div>
-    <div class="category-card"><span>🥗</span>Healthy Choices</div>
-    <div class="category-card"><span>🍰</span>Desserts You’ll Love</div>
-    <div class="category-card"><span>🌍</span>World Cuisines</div>
-    <div class="category-card"><span>🎉</span>Trending Recipes</div>
-    <!-- Add more categories as needed -->
-  </section>
-
-  <!-- RECIPES GRID -->
-  <section class="recipes-grid">
-    <div class="recipe-card">
-      <img src="{% static 'core/img/11973-spaghetti-carbonara-ii-DDMFS-4x3-6edea51e421e4457ac0c3269f3be5157.jpg' %}" alt="Spaghetti Carbonara">
-      <div class="recipe-card-body">
-        <h3>Spaghetti Carbonara</h3>
-        <p>Creamy pasta with eggs, cheese, and pancetta. A Roman classic!</p>
-        <div class="card-footer">
-          <span class="time">⏱ 25 min</span>
-          <span class="difficulty" title="Easy">🟢 Easy</span>
-          <button class="save-btn" title="Save">&#10084;</button>
-          <a href="https://www.youtube.com/watch?v=3AAdKl1UYZs" target="_blank" class="view-btn">View</a>
+    <!-- HERO VIDEO + OVERLAY -->
+    <section class="explore-header">
+      <div class="hero-video-wrap">
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          style="
+            width: 100vw;
+            max-width: 100vw;
+            height: 340px;
+            object-fit: cover;
+            display: block;
+            border-radius: 0;
+          "
+        >
+          <source
+            src="{% static 'core/video/WhatsApp Video 2025-08-28 at 15.33.06_513f5d77.mp4' %}"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
+        <div class="hero-overlay">
+          <h1>Discover Recipes with What You Have</h1>
+          <div class="quote">
+            “One cannot think well, love well, sleep well, if one has not dined
+            well.”<br />
+            <span style="font-size: 0.95em">– Virginia Woolf</span>
+          </div>
+          <form
+            class="hero-search-bar"
+            method="get"
+            action="{% url 'recipes' %}"
+          >
+            <input
+              type="text"
+              name="q"
+              placeholder="Search by ingredient or dish…"
+              autocomplete="off"
+            />
+            <button type="submit">Search</button>
+          </form>
         </div>
       </div>
-    </div>
-    <div class="recipe-card">
-      <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1080" alt="Tomato Egg Fried Rice">
-      <div class="recipe-card-body">
-        <h3>Tomato Egg Fried Rice</h3>
-        <p>Comfort food with pantry staples. Ready in 15 minutes.</p>
-        <div class="card-footer">
-          <span class="time">⏱ 15 min</span>
-          <span class="difficulty" title="Easy">🟢 Easy</span>
-          <button class="save-btn" title="Save">&#10084;</button>
-          <a href="https://www.youtube.com/watch?v=8l0d1ZjGx_A" target="_blank" class="view-btn">View</a>
-        </div>
-      </div>
-    </div>
-    <div class="recipe-card">
-      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1080" alt="Chicken Curry">
-      <div class="recipe-card-body">
-        <h3>Chicken Curry</h3>
-        <p>Rich, flavorful curry with tender chicken pieces.</p>
-        <div class="card-footer">
-          <span class="time">⏱ 40 min</span>
-          <span class="difficulty" title="Medium">🟡 Medium</span>
-          <button class="save-btn" title="Save">&#10084;</button>
-          <a href="https://www.youtube.com/watch?v=3zH6AtvUlf4" target="_blank" class="view-btn">View</a>
-        </div>
-      </div>
-    </div>
-    <div class="recipe-card">
-      <img src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?q=80&w=1080" alt="Avocado Toast">
-      <div class="recipe-card-body">
-        <h3>Avocado Toast</h3>
-        <p>Simple, healthy, and delicious breakfast or snack.</p>
-        <div class="card-footer">
-          <span class="time">⏱ 10 min</span>
-          <span class="difficulty" title="Easy">🟢 Easy</span>
-          <button class="save-btn" title="Save">&#10084;</button>
-          <a href="https://www.youtube.com/watch?v=1U7p5RrQ0pA" target="_blank" class="view-btn">View</a>
-        </div>
-      </div>
-    </div>
-    <!-- Add more recipe cards as you wish -->
-  </section>
+    </section>
 
-  <footer style="text-align:center;padding:1.2rem 0 0.7rem 0;font-size:0.95em;color:#888;">
-    © 2025 FoodBuddy &bull; <a href="#" style="color:inherit;text-decoration:underline;margin:0 0.5em;">Privacy Policy</a>
-  </footer>
-</body>
+    <!-- INGREDIENT QUICK PICKS (with slider buttons) -->
+    <div
+      style="position: relative; max-width: 1100px; margin: 0 auto 1.2em auto"
+    >
+      <button
+        class="ingredient-slider-btn left"
+        onclick="slideIngredients(-1)"
+        aria-label="Scroll left"
+      >
+        &#8592;
+      </button>
+      <div class="ingredient-tags" id="ingredientTags">
+        <button class="ingredient-tag"><span>🍅</span>Tomato</button>
+        <button class="ingredient-tag"><span>🥑</span>Avocado</button>
+        <button class="ingredient-tag"><span>🐟</span>Salmon</button>
+        <button class="ingredient-tag"><span>🥕</span>Carrot</button>
+        <button class="ingredient-tag"><span>🍗</span>Chicken</button>
+        <button class="ingredient-tag"><span>🥚</span>Egg</button>
+        <button class="ingredient-tag"><span>🧀</span>Cheese</button>
+        <button class="ingredient-tag"><span>🍞</span>Bread</button>
+        <button class="ingredient-tag"><span>🥦</span>Broccoli</button>
+        <button class="ingredient-tag"><span>🍚</span>Rice</button>
+        <button class="ingredient-tag"><span>🍝</span>Pasta</button>
+        <button class="ingredient-tag"><span>🍤</span>Shrimp</button>
+        <!-- Add more as needed -->
+      </div>
+      <button
+        class="ingredient-slider-btn right"
+        onclick="slideIngredients(1)"
+        aria-label="Scroll right"
+      >
+        &#8594;
+      </button>
+    </div>
+
+    <!-- FEATURED RECIPE OF THE DAY -->
+    <section class="featured-recipe">
+      <img
+        src="{% static 'core/img/11973-spaghetti-carbonara-ii-DDMFS-4x3-6edea51e421e4457ac0c3269f3be5157.jpg' %}"
+        alt="Spaghetti Carbonara"
+      />
+      <div class="featured-recipe_body">
+        <h2>Recipe of the Day: Spaghetti Carbonara</h2>
+        <p>
+          Creamy pasta with eggs, cheese, and pancetta. A Roman classic, perfect
+          for any night of the week!
+        </p>
+        <a
+          href="https://www.youtube.com/watch?v=3AAdKl1UYZs"
+          target="_blank"
+          class="view-btn"
+          >View Recipe</a
+        >
+      </div>
+    </section>
+
+    <!-- EXPLORE CATEGORIES -->
+    <section class="explore-categories">
+      <div class="category-card"><span>🍲</span>Quick & Easy Meals</div>
+      <div class="category-card"><span>🥗</span>Healthy Choices</div>
+      <div class="category-card"><span>🍰</span>Desserts You’ll Love</div>
+      <div class="category-card"><span>🌍</span>World Cuisines</div>
+      <div class="category-card"><span>🎉</span>Trending Recipes</div>
+      <!-- Add more categories as needed -->
+    </section>
+
+    <!-- RECIPES GRID -->
+    <section class="recipes-grid">
+      <div class="recipe-card">
+        <img
+          src="{% static 'core/img/11973-spaghetti-carbonara-ii-DDMFS-4x3-6edea51e421e4457ac0c3269f3be5157.jpg' %}"
+          alt="Spaghetti Carbonara"
+        />
+        <div class="recipe-card-body">
+          <h3>Spaghetti Carbonara</h3>
+          <p>Creamy pasta with eggs, cheese, and pancetta. A Roman classic!</p>
+          <div class="card-footer">
+            <span class="time">⏱ 25 min</span>
+            <span class="difficulty" title="Easy">🟢 Easy</span>
+            <button class="save-btn" title="Save">&#10084;</button>
+            <a
+              href="https://www.youtube.com/watch?v=3AAdKl1UYZs"
+              target="_blank"
+              class="view-btn"
+              >View</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="recipe-card">
+        <img
+          src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1080"
+          alt="Tomato Egg Fried Rice"
+        />
+        <div class="recipe-card-body">
+          <h3>Tomato Egg Fried Rice</h3>
+          <p>Comfort food with pantry staples. Ready in 15 minutes.</p>
+          <div class="card-footer">
+            <span class="time">⏱ 15 min</span>
+            <span class="difficulty" title="Easy">🟢 Easy</span>
+            <button class="save-btn" title="Save">&#10084;</button>
+            <a
+              href="https://www.youtube.com/watch?v=8l0d1ZjGx_A"
+              target="_blank"
+              class="view-btn"
+              >View</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="recipe-card">
+        <img
+          src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1080"
+          alt="Chicken Curry"
+        />
+        <div class="recipe-card-body">
+          <h3>Chicken Curry</h3>
+          <p>Rich, flavorful curry with tender chicken pieces.</p>
+          <div class="card-footer">
+            <span class="time">⏱ 40 min</span>
+            <span class="difficulty" title="Medium">🟡 Medium</span>
+            <button class="save-btn" title="Save">&#10084;</button>
+            <a
+              href="https://www.youtube.com/watch?v=3zH6AtvUlf4"
+              target="_blank"
+              class="view-btn"
+              >View</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="recipe-card">
+        <img
+          src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?q=80&w=1080"
+          alt="Avocado Toast"
+        />
+        <div class="recipe-card-body">
+          <h3>Avocado Toast</h3>
+          <p>Simple, healthy, and delicious breakfast or snack.</p>
+          <div class="card-footer">
+            <span class="time">⏱ 10 min</span>
+            <span class="difficulty" title="Easy">🟢 Easy</span>
+            <button class="save-btn" title="Save">&#10084;</button>
+            <a
+              href="https://www.youtube.com/watch?v=1U7p5RrQ0pA"
+              target="_blank"
+              class="view-btn"
+              >View</a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- Add more recipe cards as you wish -->
+    </section>
+
+    <footer
+      style="
+        text-align: center;
+        padding: 1.2rem 0 0.7rem 0;
+        font-size: 0.95em;
+        color: #888;
+      "
+    >
+      © 2025 FoodBuddy &bull;
+      <a
+        href="#"
+        style="color: inherit; text-decoration: underline; margin: 0 0.5em"
+        >Privacy Policy</a
+      >
+    </footer>
+  </body>
 </html>
